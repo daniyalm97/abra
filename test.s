@@ -1,0 +1,9 @@
+add x3,x4,x5
+sub x6,x7,x3
+slli x3,x3,12
+addi x4,x0,256
+ori x31,x31,2047
+lh x13,x22,64
+sb x13,x22,77
+sh x3,x2,20
+lh x3,x3,20
