@@ -1,6 +1,5 @@
 """
 A Bad RISC-V Assembler
-Authored by DD
 """
 import sys
 import binascii
@@ -38,12 +37,22 @@ for n in range(0,len(lines)):
 				func3 = word[3]
 				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
 				bin_instr.insert(0,func3)
-				bin_instr.insert(0,format(int(param[1][1:]),'05b'))
+				if param[1][0] == 'x':
+					bin_instr.insert(0,format(int(param[1][1:]),'05b'))
+				else:
+					tp = param[1].split('(')
+					param[1]=tp[1][:-1]
+					param.insert(2,tp[0])
+					bin_instr.insert(0,format(int(param[1][1:]),'05b'))
 				if instr=='slli' or instr=='srli' or instr=='srai':
+					func7 = word[4]
 					bin_instr.insert(0,format(int(param[2]),'05b'))
 					bin_instr.insert(0,func7[:-1])
 				else:
-					bin_instr.insert(0,format(int(param[2]),'012b'))	
+					if param[2][0] == '-':
+						bin_instr.insert(0,('1'+format(int(param[2][1:]),'012b')[1:]))
+					else:
+						bin_instr.insert(0,format(int(param[2]),'012b'))	
 			if word[1] == 's': #S-Type
 				func3 = word[3]
 				bin_instr.insert(0,format(int(param[2]),'012b')[-5:])
@@ -53,10 +62,11 @@ for n in range(0,len(lines)):
 				bin_instr.insert(0,format(int(param[2]),'012b')[:-5])				
 	out = ''.join(bin_instr)
 	ol = hex(int(out,2))[2:]
+	ol = ol[:-1] if ol[-1]=='L' else ol
 	for l in range(8-len(ol)):
 		ol = '0'+ol
 	Outfile.write(binascii.unhexlify(ol))
-	print (n+1),lines[n][:-1],'->',out,'=',hex(int(out,2))
+	print (n+1),lines[n][:-1],'->',out,'=','0x{}'.format(ol)
 	del bin_instr[:]
 print '-----------------------'
 print 'Output to file: out.bin'

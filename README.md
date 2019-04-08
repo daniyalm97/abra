@@ -9,9 +9,9 @@ Status:
 The instruction format is stored in file data.csv
 
 The following instruction types are yet to be implemented
-- B-type
+- SB-type
 - U-type
-- J-type
+- UJ-type
 
 Usage:
 ------
@@ -23,6 +23,6 @@ It generates a binary file out.bin in the same work directory.
 
 Known-Issues:
 -------------
-- Default ASM format for load and store instructions not considered
+- Default ASM format for store instructions not considered
 - Comments and next line char at the end of test.s are not considered yet and return errors
 - Dirty code :P
