@@ -3,6 +3,7 @@ A Bad RISC-V Assembler
 """
 import sys
 import binascii
+from bitstring import Bits
 try:
 	Infile = sys.argv[1]
 except:
@@ -50,7 +51,8 @@ for n in range(0,len(lines)):
 					bin_instr.insert(0,func7[:-1])
 				else:
 					if param[2][0] == '-':
-						bin_instr.insert(0,('1'+format(int(param[2][1:]),'012b')[1:]))
+						neg = Bits(int=int(param[2]),length=12)
+						bin_instr.insert(0,neg.bin)
 					else:
 						bin_instr.insert(0,format(int(param[2]),'012b'))	
 			if word[1] == 's': #S-Type
@@ -59,7 +61,8 @@ for n in range(0,len(lines)):
 				param[1]=tp[1][:-1]
 				param.insert(2,tp[0])
 				if param[2][0] == '-':
-					imm = '1'+format(int(param[2][1:]),'012b')[1:]
+					neg = Bits(int=int(param[2]),length=12)
+					imm = neg.bin
 				else:
 					imm = format(int(param[2]),'012b')
 				bin_instr.insert(0,imm[7:])
@@ -73,9 +76,11 @@ for n in range(0,len(lines)):
 			if word[1] == 'j': #J-Type
 				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
 				if param[1][0] == '-':
-					bin_instr.insert(0,'1'+format(int(param[1][1:]),'019b'))
+					neg = Bits(int=int(param[1]),length=20)
+					imm = neg.bin
 				else:
-					bin_instr.insert(0,format(int(param[1]),'020b'))
+					imm = format(int(param[1]),'020b')
+				bin_instr.insert(0,imm[0]+imm[10:]+imm[9]+imm[1:9])
 	out = ''.join(bin_instr)
 	ol = hex(int(out,2))[2:]
 	ol = ol[:-1] if ol[-1]=='L' else ol

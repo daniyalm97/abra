@@ -6,10 +6,24 @@ An Assembler for the RV32I subset of the RISC-V ISA.
 
 Status:
 ------
+The following instruction types are implemented
+- R-type
+- I-type
+- S-type
+- U-type
+- J-type
+
 The instruction format is stored in file data.csv
 
-The following instruction types are yet to be implemented
-- B-type
+Installation:
+------
+Clone the repository
+
+	git clone https://github.com/daniyalm97/abra
+
+Install python package dependencies
+
+	pip install bitstring==3.1.5
 
 Usage:
 ------
