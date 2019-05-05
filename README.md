@@ -10,6 +10,7 @@ The following instruction types are implemented
 - R-type
 - I-type
 - S-type
+- B-Type
 - U-type
 - J-type
 

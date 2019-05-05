@@ -19,8 +19,15 @@ except:
 	sys.exit()
 Outfile = open('out.bin','w')
 bin_instr=[]
+label=[]
+lc=[]
 for n in range(0,len(lines)):
-	op = lines[n].split()
+	if lines[n][-2]==':':
+		label.append(lines[n][:-2])
+		lc.append(n+2)
+		continue
+	else:
+		op = lines[n].split()
 	instr,param = op[0],op[1].split(',')
 	for line in data:
 		word = line.split(',')
@@ -81,6 +88,17 @@ for n in range(0,len(lines)):
 				else:
 					imm = format(int(param[1]),'020b')
 				bin_instr.insert(0,imm[0]+imm[10:]+imm[9]+imm[1:9])
+			if word[1]=='b': #B-Type
+				func3 = word[3]
+				if param[2] in label:
+					neg = Bits(int=int(lc[label.index(param[2])]-(n+1)),length=12)
+					imm = neg.bin
+					bin_instr.insert(0,imm[8:]+imm[1])
+					bin_instr.insert(0,func3)
+					bin_instr.insert(0,format(int(param[0][1:]),'05b'))
+					bin_instr.insert(0,format(int(param[1][1:]),'05b'))
+					bin_instr.insert(0,imm[0]+imm[2:8])
+					param[2] = lc[label.index(param[2])]-(n+1)
 	out = ''.join(bin_instr)
 	ol = hex(int(out,2))[2:]
 	ol = ol[:-1] if ol[-1]=='L' else ol
@@ -88,7 +106,7 @@ for n in range(0,len(lines)):
 		ol = '0'+ol
 	Outfile.write(out+'\n')#binascii.unhexlify(ol))
 	sp=' '
-	print format((n+1),'02d'),lines[n][:-1],sp*(20-len(lines[n]))+'->'+sp,out,sp+'='+sp,'0x{}'.format(ol)
+	print format((n-len(label)+1),'02d'),lines[n][:-1],sp*(20-len(lines[n]))+'->'+sp,out,sp+'='+sp,'0x{}'.format(ol)
 	del bin_instr[:]
 print '-----------------------'
 print 'Output to file: out.bin'
