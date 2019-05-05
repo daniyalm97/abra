@@ -55,18 +55,35 @@ for n in range(0,len(lines)):
 						bin_instr.insert(0,format(int(param[2]),'012b'))	
 			if word[1] == 's': #S-Type
 				func3 = word[3]
-				bin_instr.insert(0,format(int(param[2]),'012b')[-5:])
+				tp = param[1].split('(')
+				param[1]=tp[1][:-1]
+				param.insert(2,tp[0])
+				if param[2][0] == '-':
+					imm = '1'+format(int(param[2][1:]),'012b')[1:]
+				else:
+					imm = format(int(param[2]),'012b')
+				bin_instr.insert(0,imm[7:])
 				bin_instr.insert(0,func3)
-				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
 				bin_instr.insert(0,format(int(param[1][1:]),'05b'))
-				bin_instr.insert(0,format(int(param[2]),'012b')[:-5])				
+				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
+				bin_instr.insert(0,imm[:7])
+			if word[1] == 'u': #U-Type
+				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
+				bin_instr.insert(0,format(int(param[1][2:],16),'020b'))
+			if word[1] == 'j': #J-Type
+				bin_instr.insert(0,format(int(param[0][1:]),'05b'))
+				if param[1][0] == '-':
+					bin_instr.insert(0,'1'+format(int(param[1][1:]),'019b'))
+				else:
+					bin_instr.insert(0,format(int(param[1]),'020b'))
 	out = ''.join(bin_instr)
 	ol = hex(int(out,2))[2:]
 	ol = ol[:-1] if ol[-1]=='L' else ol
 	for l in range(8-len(ol)):
 		ol = '0'+ol
-	Outfile.write(binascii.unhexlify(ol))
-	print (n+1),lines[n][:-1],'->',out,'=','0x{}'.format(ol)
+	Outfile.write(out+'\n')#binascii.unhexlify(ol))
+	sp=' '
+	print format((n+1),'02d'),lines[n][:-1],sp*(20-len(lines[n]))+'->'+sp,out,sp+'='+sp,'0x{}'.format(ol)
 	del bin_instr[:]
 print '-----------------------'
 print 'Output to file: out.bin'

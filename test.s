@@ -4,3 +4,8 @@ slli x3,x3,12
 addi x4,x0,256
 ori x31,x31,2047
 lb x13,-64(x22)
+jalr x1,100(x5)
+sb x5,40(x6)
+sw x25,-72(x25)
+lui x5,0x12345
+jal x1,-100
