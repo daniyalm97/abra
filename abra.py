@@ -26,7 +26,6 @@ for r in range(0,len(lines)):
 	if lines[r][-2]==':':
 		label.append(lines[r][:-2])
 		lc.append(r+2-len(label))
-print label,lc
 for n in range(0,len(lines)):
 	if lines[n][-2]!=':':
 		op = lines[n].split()
@@ -95,7 +94,7 @@ for n in range(0,len(lines)):
 			if word[1]=='b': #B-Type
 				func3 = word[3]
 				if param[2] in label:
-					neg = Bits(int=int(lc[label.index(param[2])]),length=12)
+					neg = Bits(int=int(lc[label.index(param[2])]-(n+1)),length=12)
 					imm = neg.bin
 					bin_instr.insert(0,imm[8:]+imm[1])
 					bin_instr.insert(0,func3)
