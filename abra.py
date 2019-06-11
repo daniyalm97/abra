@@ -17,17 +17,21 @@ try:
 except:
 	print 'data.csv file missing'
 	sys.exit()
-Outfile = open('out.bin','w')
+Outfile = open('../prog.txt','w')
 bin_instr=[]
 label=[]
 lc=[]
+v=1
+for r in range(0,len(lines)):
+	if lines[r][-2]==':':
+		label.append(lines[r][:-2])
+		lc.append(r+2-len(label))
+print label,lc
 for n in range(0,len(lines)):
-	if lines[n][-2]==':':
-		label.append(lines[n][:-2])
-		lc.append(n+2)
-		continue
-	else:
+	if lines[n][-2]!=':':
 		op = lines[n].split()
+	else:
+		continue
 	instr,param = op[0],op[1].split(',')
 	for line in data:
 		word = line.split(',')
@@ -91,7 +95,7 @@ for n in range(0,len(lines)):
 			if word[1]=='b': #B-Type
 				func3 = word[3]
 				if param[2] in label:
-					neg = Bits(int=int(lc[label.index(param[2])]-(n+1)),length=12)
+					neg = Bits(int=int(lc[label.index(param[2])]),length=12)
 					imm = neg.bin
 					bin_instr.insert(0,imm[8:]+imm[1])
 					bin_instr.insert(0,func3)
@@ -106,7 +110,8 @@ for n in range(0,len(lines)):
 		ol = '0'+ol
 	Outfile.write(out+'\n')#binascii.unhexlify(ol))
 	sp=' '
-	print format((n-len(label)+1),'02d'),lines[n][:-1],sp*(20-len(lines[n]))+'->'+sp,out,sp+'='+sp,'0x{}'.format(ol)
+	print format(v,'02d'),lines[n][:-1],sp*(20-len(lines[n]))+'->'+sp,out,sp+'='+sp,'0x{}'.format(ol)
 	del bin_instr[:]
+	v=v+1
 print '-----------------------'
-print 'Output to file: out.bin'
+print 'Output to file: prog.txt'

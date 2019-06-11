@@ -29,9 +29,9 @@ sw,s,0100011,010,na
 lui,u,0110111,na,na
 auipc,u,0010111,na,na
 jal,j,1101111,na,na
-beq,b,1100111,000,na
-bne,b,1100111,001,na
-blt,b,1100111,100,na
-bge,b,1100111,101,na
-bltu,b,1100111,110,na
-bgeu,b,1100111,111,na
+beq,b,1100011,000,na
+bne,b,1100011,001,na
+blt,b,1100011,100,na
+bge,b,1100011,101,na
+bltu,b,1100011,110,na
+bgeu,b,1100011,111,na

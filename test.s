@@ -1,10 +1,11 @@
-addi x3,x3,-5
+addi x3,x0,-5
+get:
 slli x3,x3,12
-try:
 addi x4,x0,256
-ori x31,x31,2047
-lb x13,-64(x22)
-beq x5,x4,try
-so:
+beq x4,x4,goto
 addi x0,x0,0
-bne x0,x0,so
+come:
+addi x0,x0,0
+addi x0,x0,0
+goto:
+or x31,x3,x4
