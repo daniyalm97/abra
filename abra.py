@@ -94,7 +94,10 @@ for n in range(0,len(lines)):
 			if word[1]=='b': #B-Type
 				func3 = word[3]
 				if param[2] in label:
-					neg = Bits(int=int(lc[label.index(param[2])]-(n+1)),length=12)
+					if n>lc[label.index(param[2])]:
+						neg = Bits(int=int(lc[label.index(param[2])]-(n)),length=12)
+					else:
+						neg = Bits(int=int(lc[label.index(param[2])]-(n+1)),length=12)
 					imm = neg.bin
 					bin_instr.insert(0,imm[8:]+imm[1])
 					bin_instr.insert(0,func3)
